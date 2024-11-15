@@ -13,8 +13,8 @@ endif(__SERVICE_VM__)
 
 find_package(OpenSSL REQUIRED)
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 
 # Link runTests with what we want to test and the GTest and pthread library
 add_executable(dcap_provider_utests ../UnitTest/test_local_cache.cpp ../UnitTest/test_quote_prov.cpp ../UnitTest/main.cpp ../Linux/local_cache.cpp)

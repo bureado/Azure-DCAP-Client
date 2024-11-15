@@ -11,9 +11,11 @@
 #include <ftw.h>
 #include <locale.h>
 #include <openssl/sha.h>
+#include <openssl/evp.h>
 #include <pwd.h>
 #include <unistd.h>
 #include <sys/file.h>
+#include <stdexcept>
 #include <sys/stat.h>
 #include <sys/types.h>
 
@@ -243,10 +245,14 @@ static void init()
 static std::string sha256(size_t data_size, const void* data)
 {
     unsigned char hash[SHA256_DIGEST_LENGTH];
+    EVP_Q_digest(NULL, "SHA256", NULL, data, data_size, hash, NULL);
+
+/*  Not supported in OpenSSL 3.x
     SHA256_CTX sha256;
     SHA256_Init(&sha256);
     SHA256_Update(&sha256, data, data_size);
     SHA256_Final(hash, &sha256);
+*/
 
     std::string retval;
     retval.reserve(2 * sizeof(hash) + 1);

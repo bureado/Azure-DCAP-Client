@@ -1,0 +1,21 @@
+FROM mcr.microsoft.com/azurelinux/base/core:3.0 AS builder
+
+# dcap's likely build dependencies
+RUN tdnf install build-essential gmock-devel openssl-devel gtest-devel glibc-devel curl-devel nlohmann-json-devel -y
+
+# Helpful for interactive work
+# Note: wget and ca-c needed by DCAP's ./configure to get header blobs from Intel's GH
+RUN tdnf install nano git ca-certificates less wget -y
+
+# Copy the checked out branch with submodules
+COPY . /Azure-DCAP-Client
+
+# Output will be in /openenclave/build/output
+
+WORKDIR /Azure-DCAP-Client/src/Linux
+
+RUN cmake .
+RUN ./configure
+RUN make
+# Note: IMDS checks will fail
+# RUN make check
